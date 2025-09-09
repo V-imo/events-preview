@@ -14,7 +14,6 @@ export default async function EventPage({
 
   const event = DEFINITIONS.find((event) => event.name === eventName)
 
-  console.log(event)
   return (
     <div className="container mx-auto max-w-5xl p-4">
       <Head>
@@ -25,7 +24,7 @@ export default async function EventPage({
           <Link href="/">← Back</Link>
         </Button>
       </div>
-      <EventDetails event={event as any} />
+      <EventDetails event={event as typeof DEFINITIONS[number]} />
     </div>
   )
 }

@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { DEFINITIONS } from "vimo-events"
 
 type PrimitiveType = "string" | "number" | "boolean"
 
@@ -159,7 +160,7 @@ function AttributesTable({
 export function EventDetails({
   event,
 }: {
-  event: EventDefinition | undefined | null
+  event: typeof DEFINITIONS[number]
 }) {
   if (!event) return null
   const title = event.camelName ?? event.name
@@ -172,7 +173,7 @@ export function EventDetails({
         )}
       </CardHeader>
       <CardContent>
-        <AttributesTable attributes={event.attributes} />
+        <AttributesTable attributes={event.attributes as AttributeDescriptor[]} />
       </CardContent>
     </Card>
   )
