@@ -24,7 +24,7 @@ export default async function EventPage({
           <Link href="/">← Back</Link>
         </Button>
       </div>
-      <EventDetails event={event as typeof DEFINITIONS[number]} />
+      <EventDetails event={event as (typeof DEFINITIONS)[number]} />
     </div>
   )
 }

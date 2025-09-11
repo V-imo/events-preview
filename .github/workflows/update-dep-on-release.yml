@@ -1,0 +1,27 @@
+name: Update dependency on package release
+
+on:
+  repository_dispatch:
+    types: [package-updated]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Bump package to latest
+        run: |
+          npm install vimo-events@latest
+          npm install
+
+      - name: Commit and push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: bump vimo-events to latest"

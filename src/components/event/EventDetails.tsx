@@ -19,11 +19,12 @@ import {
 } from "@/components/ui/table"
 import { DEFINITIONS } from "vimo-events"
 
-type PrimitiveType = "string" | "number" | "boolean"
+type PrimitiveType = "string" | "number" | "boolean" | "any"
 
 type AttributeDescriptor = {
   name: string
   description?: string
+  required?: boolean
   // Primitive
   type?: PrimitiveType
   // Object
@@ -88,12 +89,14 @@ function AttributesTable({
     <Table className="table-fixed">
       <colgroup>
         <col className="min-w-[12rem] max-w-[20rem]" />
+        <col className="w-[7rem]" />
         <col />
       </colgroup>
       {!isNested && (
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
+            <TableHead>Required</TableHead>
             <TableHead>Description</TableHead>
           </TableRow>
         </TableHeader>
@@ -113,13 +116,20 @@ function AttributesTable({
                   <span className="font-medium">{attr.name}</span>{" "}
                   <span className="text-muted-foreground">{typeLabel}</span>
                 </TableCell>
+                <TableCell className="truncate">
+                  {attr.required ? (
+                    <span className="text-red-600 dark:text-red-400">
+                      required
+                    </span>
+                  ) : null}
+                </TableCell>
                 <TableCell className="whitespace-normal break-words">
                   {attr.description ?? ""}
                 </TableCell>
               </TableRow>
               {hasNested && (
                 <TableRow>
-                  <TableCell colSpan={2} className="p-0">
+                  <TableCell colSpan={3} className="p-0">
                     {attr.attributes && (
                       <NestedAttributes attributes={attr.attributes} />
                     )}
@@ -160,7 +170,7 @@ function AttributesTable({
 export function EventDetails({
   event,
 }: {
-  event: typeof DEFINITIONS[number]
+  event: (typeof DEFINITIONS)[number]
 }) {
   if (!event) return null
   const title = event.camelName ?? event.name
@@ -173,7 +183,9 @@ export function EventDetails({
         )}
       </CardHeader>
       <CardContent>
-        <AttributesTable attributes={event.attributes as AttributeDescriptor[]} />
+        <AttributesTable
+          attributes={event.attributes as AttributeDescriptor[]}
+        />
       </CardContent>
     </Card>
   )
